@@ -45,7 +45,7 @@ where goods_name like 'A%'
 and quantity > 10
 
 --4.9
-select city_sel, sqrt(sum(comis_sel)) [sqrt comis_sel]
+select city_sel, power(sum(comis_sel), 2) [Square comis_sel]
 from Sellers
 group by city_sel
 
