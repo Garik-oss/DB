@@ -39,7 +39,7 @@ group by c.city_cust
 having count(*) > 2
 
 --4.8
-select goods_name, FORMAT(Price, 'C') AS PriceFormatted
+select goods_name, FORMAT(Price, 'C')[PriceFormatted]
 from Goods
 where goods_name like 'A%'
 and quantity > 10
