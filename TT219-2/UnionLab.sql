@@ -4,6 +4,7 @@ GO
 USE UnionLab;
 GO
 
+--9.3
 CREATE TABLE Products (
  prod_id INT IDENTITY(1,1) PRIMARY KEY,
  name nvarchar(50) ,
@@ -23,6 +24,7 @@ SELECT * INTO Sells_2016 FROM Sells_2015
 
 SELECT * INTO Sells_2017 FROM Sells_2015
 
+--9.4
 INSERT INTO Products (name, price, description) VALUES 
  ('Notebook Asser 15.6" intel core i5', 500, 'ddr 500'),
  ('Notebook Asser 13.3" intel core i5', 600, 'ssd 125'),
@@ -52,3 +54,83 @@ INSERT INTO Sells_2017 (prod_id,count,sel_date) VALUES
  (4,1,'2017-05-14'),
  (5,1,'2017-07-02'),
  (7,5,'2017-09-30');
+
+--9.5
+SELECT s.id_sel, p.name, [count]
+FROM Sells_2015 s
+join Products p on p.prod_id = s.prod_id
+UNION
+SELECT id_sel, p.name, count
+FROM Sells_2016 s
+join Products p on p.prod_id = s.prod_id
+UNION
+SELECT id_sel, p.name, count
+FROM Sells_2017 s
+join Products p on p.prod_id = s.prod_id
+order by count asc
+
+SELECT s.id_sel, p.name, [count]
+FROM Sells_2015 s
+join Products p on p.prod_id = s.prod_id
+UNION ALL
+SELECT id_sel, p.name, count
+FROM Sells_2016 s
+join Products p on p.prod_id = s.prod_id
+UNION ALL
+SELECT id_sel, p.name, count
+FROM Sells_2017 s
+join Products p on p.prod_id = s.prod_id
+order by count asc
+
+--9.6
+SELECT p.name, count, s.sel_date
+FROM Sells_2016 s
+join Products p on p.prod_id = s.prod_id
+UNION
+SELECT p.name, count, s.sel_date
+FROM Sells_2017 s
+join Products p on p.prod_id = s.prod_id
+order by s.sel_date desc
+
+SELECT p.name, count, s.sel_date
+FROM Sells_2016 s
+join Products p on p.prod_id = s.prod_id
+UNION ALL
+SELECT p.name, count, s.sel_date
+FROM Sells_2017 s
+join Products p on p.prod_id = s.prod_id
+order by s.sel_date desc
+
+--9.7
+select 2015 as year, MAX(count) as MaxSellCount
+from Sells_2015
+Union 
+select 2016 as year, MAX(count) as MaxSellCount
+from Sells_2016
+Union
+select 2017 as year, MAX(count) as MaxSellCount
+from Sells_2017
+
+--9.8
+SELECT p.prod_id, p.name
+FROM Sells_2015 s
+join Products p on p.prod_id = s.prod_id
+except
+SELECT p.prod_id, p.name
+FROM Sells_2016 s
+join Products p on p.prod_id = s.prod_id
+
+--9.9
+SELECT p.prod_id, p.name
+FROM Sells_2015 s
+join Products p on p.prod_id = s.prod_id
+intersect
+SELECT p.prod_id, p.name
+FROM Sells_2016 s
+join Products p on p.prod_id = s.prod_id
+intersect
+SELECT p.prod_id, p.name
+FROM Sells_2017 s
+join Products p on p.prod_id = s.prod_id
+
+--9.10
