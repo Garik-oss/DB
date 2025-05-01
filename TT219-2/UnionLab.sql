@@ -133,4 +133,37 @@ SELECT p.prod_id, p.name
 FROM Sells_2017 s
 join Products p on p.prod_id = s.prod_id
 
---9.10
+--9.11
+Select * into Total_Sells
+from Sells_2015
+where 1 = 0
+
+insert into Total_Sells
+Select prod_id, count, sel_date from Sells_2015
+Union
+Select prod_id, count, sel_date from Sells_2016
+Union
+Select prod_id, count, sel_date from Sells_2017
+
+select * from Total_Sells
+order by sel_date
+
+SELECT pt.prod_id, pt.name, [2014], [2015], [2016], [2017], [2018]
+FROM
+(
+    SELECT p.prod_id, p.name, Year(t.sel_date) as year, count
+    FROM Total_Sells t
+	Join Products p on p.prod_id = t.prod_id
+) AS s
+PIVOT
+(
+    SUM(count)  -- or COUNT, AVG, etc.
+    FOR year IN ([2014], [2015], [2016], [2017], [2018])
+) AS pt;
+
+Select prod_id, count, sel_date from Sells_2015
+Union
+Select prod_id, count, sel_date from Sells_2016
+Union
+Select prod_id, count, sel_date from Sells_2017
+order by prod_id
